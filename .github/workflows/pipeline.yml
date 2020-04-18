@@ -43,8 +43,8 @@ jobs:
         cf target -o "$CF_ORG" -s "$CF_SPACE"
         cf push -p ./pal-tracker/pal-tracker.jar
       env:
-        CF_API_URL: ${{ https://pal-tracker-a0dca6ea-af99-4f6f-ac0c-b1fe4dac34a7.cfapps.io/ }}
-        CF_ORG: ${{ uki-engineering }}
-        CF_SPACE: ${{ NageswaraRajuDachiraju }}
-        CF_USERNAME: ${{ nageswara.dachiraju@cognizant.com }}
-        CF_PASSWORD: ${{ Anika123% }}
+        CF_API_URL: https://pal-tracker-a0dca6ea-af99-4f6f-ac0c-b1fe4dac34a7.cfapps.io/
+        CF_ORG: uki-engineering
+        CF_SPACE: NageswaraRajuDachiraju
+        CF_USERNAME: nageswara.dachiraju@cognizant.com
+        CF_PASSWORD: Anika123%
