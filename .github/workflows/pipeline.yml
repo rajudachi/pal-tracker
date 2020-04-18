@@ -38,13 +38,13 @@ jobs:
         name: pal-tracker
     - name: Deploy to cf
       run: |
-        cf api "$CF_API_URL"
+        cf api "https://pal-tracker-a0dca6ea-af99-4f6f-ac0c-b1fe4dac34a7.cfapps.io/"
         cf auth
-        cf target -o "$CF_ORG" -s "$CF_SPACE"
+        cf target -o "uki-engineering" -s "NageswaraRajuDachiraju"
         cf push -p ./pal-tracker/pal-tracker.jar
       env:
-        CF_API_URL: https://pal-tracker-a0dca6ea-af99-4f6f-ac0c-b1fe4dac34a7.cfapps.io/
-        CF_ORG: uki-engineering
-        CF_SPACE: NageswaraRajuDachiraju
-        CF_USERNAME: nageswara.dachiraju@cognizant.com
-        CF_PASSWORD: Anika123%
+        CF_API_URL: ${{ secrets.CF_API_URL }}
+        CF_ORG: ${{ secrets.CF_ORG }}
+        CF_SPACE: ${{ secrets.CF_SPACE }}
+        CF_USERNAME: ${{ secrets.CF_USERNAME }}
+        CF_PASSWORD: ${{ secrets.CF_PASSWORD }}
