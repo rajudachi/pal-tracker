@@ -1,8 +1,10 @@
 package test.pivotal.pal.trackerapi;
 
 import com.jayway.jsonpath.DocumentContext;
+import com.mysql.cj.jdbc.MysqlDataSource;
 import io.pivotal.pal.tracker.PalTrackerApplication;
 import io.pivotal.pal.tracker.TimeEntry;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,9 +13,11 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.TimeZone;
 
 import static com.jayway.jsonpath.JsonPath.parse;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,7 +31,18 @@ public class TimeEntryApiTest {
 
     private final long projectId = 123L;
     private final long userId = 456L;
-    private TimeEntry timeEntry = new TimeEntry(projectId, userId, LocalDate.parse("2017-01-08"), 8L);
+    private TimeEntry timeEntry = new TimeEntry(projectId, userId, LocalDate.parse("2017-01-08"), 8);
+
+    @BeforeEach
+    public void setUp() throws Exception {
+        MysqlDataSource dataSource = new MysqlDataSource();
+        dataSource.setUrl(System.getenv("SPRING_DATASOURCE_URL"));
+
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        jdbcTemplate.execute("TRUNCATE time_entries");
+
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+    }
 
     @Test
     public void testCreate() throws Exception {
@@ -41,7 +56,7 @@ public class TimeEntryApiTest {
         assertThat(createJson.read("$.projectId", Long.class)).isEqualTo(projectId);
         assertThat(createJson.read("$.userId", Long.class)).isEqualTo(userId);
         assertThat(createJson.read("$.date", String.class)).isEqualTo("2017-01-08");
-        assertThat(createJson.read("$.hours", Long.class)).isEqualTo(8);
+        assertThat(createJson.read("$.hours", Integer.class)).isEqualTo(8);
     }
 
     @Test
@@ -77,7 +92,7 @@ public class TimeEntryApiTest {
         assertThat(readJson.read("$.projectId", Long.class)).isEqualTo(projectId);
         assertThat(readJson.read("$.userId", Long.class)).isEqualTo(userId);
         assertThat(readJson.read("$.date", String.class)).isEqualTo("2017-01-08");
-        assertThat(readJson.read("$.hours", Long.class)).isEqualTo(8);
+        assertThat(readJson.read("$.hours", Integer.class)).isEqualTo(8);
     }
 
     @Test
@@ -85,7 +100,7 @@ public class TimeEntryApiTest {
         Long id = createTimeEntry();
         long projectId = 2L;
         long userId = 3L;
-        TimeEntry updatedTimeEntry = new TimeEntry(projectId, userId, LocalDate.parse("2017-01-09"), 9L);
+        TimeEntry updatedTimeEntry = new TimeEntry(projectId, userId, LocalDate.parse("2017-01-09"), 9);
 
 
         ResponseEntity<String> updateResponse = restTemplate.exchange("/time-entries/" + id, HttpMethod.PUT, new HttpEntity<>(updatedTimeEntry, null), String.class);
@@ -98,7 +113,7 @@ public class TimeEntryApiTest {
         assertThat(updateJson.read("$.projectId", Long.class)).isEqualTo(projectId);
         assertThat(updateJson.read("$.userId", Long.class)).isEqualTo(userId);
         assertThat(updateJson.read("$.date", String.class)).isEqualTo("2017-01-09");
-        assertThat(updateJson.read("$.hours", Long.class)).isEqualTo(9);
+        assertThat(updateJson.read("$.hours", Integer.class)).isEqualTo(9);
     }
 
     @Test
