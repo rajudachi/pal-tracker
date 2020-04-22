@@ -19,7 +19,6 @@ public class JdbcTimeEntryRepository implements TimeEntryRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    private final static ZoneId DEFAULTTIMEZONE = ZoneId.systemDefault();
     public JdbcTimeEntryRepository(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
