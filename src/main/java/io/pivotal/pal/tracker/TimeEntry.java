@@ -1,5 +1,7 @@
 package io.pivotal.pal.tracker;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -7,13 +9,14 @@ public class TimeEntry {
     private Long id ;
     private Long projectId;
     private Long userId;
+    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "America/Chicago")
     private LocalDate date;
-    private Long hours;
+    private int hours;
 
     public TimeEntry() {
     }
 
-    public TimeEntry(Long id, Long projectId, Long userId, LocalDate date, Long hours) {
+    public TimeEntry(Long id, Long projectId, Long userId, LocalDate date, int hours) {
         this.id = id;
         this.projectId = projectId;
         this.userId = userId;
@@ -21,7 +24,7 @@ public class TimeEntry {
         this.hours = hours;
     }
 
-    public TimeEntry(Long projectId, Long userId, LocalDate parse, Long i) {
+    public TimeEntry(Long projectId, Long userId, LocalDate parse, int i) {
         this.projectId = projectId;
         this.userId = userId;
         this.date = parse;
@@ -60,11 +63,11 @@ public class TimeEntry {
         this.date = date;
     }
 
-    public Long getHours() {
+    public int getHours() {
         return hours;
     }
 
-    public void setHours(Long hours) {
+    public void setHours(int hours) {
         this.hours = hours;
     }
 
