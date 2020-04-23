@@ -6,7 +6,7 @@ applications:
       - route: pal-tracker-03D6D01C-A52D-4C99-A725-332BF08656AF.cfapps.io
     env:
       WELCOME_MESSAGE: Hello JDBC Lab
-      SPRING_DATASOURCE_URL: jdbc:mysql://us-cdbr-iron-east-01.cleardb.net/tracker_dev?user=tracker&useSSL=false&useTimezone=true&serverTimezone=UTC&useLegacyDatetimeCode=false
+      SPRING_DATASOURCE_URL: jdbc:mysql://us-cdbr-iron-east-01.cleardb.net:3306/ad_849d5fe6c9f3390?user=b7e598b71ddd78&password=7b5c8b12&useSSL=false&useTimezone=true&serverTimezone=UTC&useLegacyDatetimeCode=false
 
       JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 11.+ } }'
     services:
